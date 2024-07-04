@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "../atoms/user";
 import {
   Container,
   Typography,
@@ -48,16 +50,9 @@ const CreateForm = () => {
   const [category, setCategory] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState("");
-  const [email, setEmail] = useState("");
-  const navigate = useNavigate();
+  const author = useRecoilValue(userAtom);
 
-  useEffect(() => {
-    const userEmail = localStorage.getItem("userEmail");
-    console.log("user email: ", userEmail);
-    if (userEmail) {
-      setEmail(userEmail);
-    }
-  }, []);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,9 +62,9 @@ const CreateForm = () => {
     formData.set("category", category);
     formData.set("content", content);
     formData.set("image", image);
-    formData.set("email", email);
+    formData.set("author", author);
 
-    console.log("Details: ", { title, summary, content, image });
+    console.log("Details: ", { title, summary, content, image, author });
 
     try {
       const response = await fetch("http://localhost:5000/create", {

@@ -16,7 +16,7 @@ const Footer = () => {
         backgroundColor: "#334464",
         height: "40px",
         width: "100%",
-        position: "sticky",
+        position: "fixed",
         bottom: 0,
         left: 0,
         marginTop: 5,

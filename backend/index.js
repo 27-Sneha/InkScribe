@@ -30,70 +30,18 @@ const upload = multer({ storage });
 
 connectDB();
 
-app.get("/", (req, res) => {
-  res.send("Hello World!!");
-});
-
-app.post("/register", async (req, res) => {
-  const { name, email, password } = req.body;
-
-  try {
-    let user = await User.findOne({ email });
-    if (user) {
-      return res.status(400).json({ msg: "User already exists" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    user = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-    });
-
-    res.json(user).send("Register successful!");
-  } catch (e) {
-    console.log(e);
-    res.status(400).json(e);
-  }
-});
-
-app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).send("User not found");
-    }
-
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) {
-      return res.status(400).send("Invalid password");
-    }
-
-    res.send("Login successful!");
-  } catch (e) {
-    console.log(e);
-    res.status(400).json(e);
-  }
-});
-
 app.post("/create", upload.single("image"), async (req, res) => {
-  const { title, summary, category, content, image, email } = req.body;
+  const { title, summary, category, content, image, author } = req.body;
   console.log("Body", req.body);
-  console.log(email);
 
   try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).send("User not found");
-    }
     const newBlog = await Blog.create({
       title,
       summary,
       category,
       content,
       image,
-      author: user.name,
+      author,
     });
     res.status(201).json(newBlog);
   } catch (err) {
@@ -103,11 +51,9 @@ app.post("/create", upload.single("image"), async (req, res) => {
 });
 
 app.get("/blogs", async (req, res) => {
-  const { category } = req.query;
-  const filter = category ? { category } : {};
-
+  const { filter } = req.query;
   try {
-    const blogs = await Blog.find(filter);
+    const blogs = await Blog.find(JSON.parse(filter));
     res.status(200).json(blogs);
   } catch (err) {
     console.error(err);
@@ -124,6 +70,27 @@ app.get("/blogs/:id", async (req, res) => {
       return res.status(404).json({ message: "Blog not found" });
     }
     res.status(200).json(blog);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
+
+app.put("/blogs/:id", async (req, res) => {
+  const { id } = req.params;
+  const { title, content, image, category } = req.body;
+
+  try {
+    const blog = await Blog.findByIdAndUpdate(id, {
+      title,
+      content,
+      image,
+      category,
+    });
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+    res.status(200).json({ title, content, image, category });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server Error" });
