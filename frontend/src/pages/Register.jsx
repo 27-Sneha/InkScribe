@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Container, TextField, Button, Typography, Box } from "@mui/material";
-import { registerUser } from "../utils/authFunction";
+import { useAuth } from "../utils/authFunction";
 
 function Register() {
   const [name, setName] = useState("");
@@ -9,36 +9,23 @@ function Register() {
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
 
+  const { registerUser } = useAuth();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      await registerUser(name, email, password);
-      setRedirect(true);
-      // navigate("/");
-    } catch (err) {
-      console.error("Error: ", err);
-      alert("Registration failed!");
+    if (email == "" || password == "" || name == "") {
+      alert("Please fill all the fields");
+    } else if (password.length < 6) {
+      alert("Password must be at least 6 characters long");
+    } else {
+      try {
+        await registerUser(name, email, password);
+        setRedirect(true);
+      } catch (err) {
+        console.error("Error: ", err);
+        alert("Registration failed!");
+      }
     }
-
-    // try {
-    //   const response = await fetch("http://localhost:5000/register", {
-    //     method: "POST",
-    //     body: JSON.stringify({ name, email, password }),
-    //     headers: { "Content-Type": "application/json" },
-    //   });
-    //   console.log(response);
-    //   if (response.ok) {
-    //     localStorage.setItem("userEmail", email);
-    //     alert("User registered successfully!");
-    //     setRedirect(true);
-    //   } else {
-    //     alert("Registration failed!");
-    //   }
-    // } catch (err) {
-    //   console.error("Error: ", err);
-    //   alert("Registration failed!");
-    // }
   };
 
   if (redirect) {

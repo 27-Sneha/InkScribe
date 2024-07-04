@@ -1,51 +1,27 @@
 import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { Container, TextField, Button, Typography, Box } from "@mui/material";
-import { loginUser } from "../utils/authFunction";
+import { useAuth } from "../utils/authFunction";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
-  // const { loginUser } = useAuth();
+  const { loginUser } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      await loginUser(email, password);
-      setRedirect(true);
-    } catch (err) {
-      console.error("Error: ", err);
-      alert("Login failed!");
+    if (email == "" || password == "") {
+      alert("Please fill all the fields");
+    } else {
+      try {
+        await loginUser(email, password);
+        setRedirect(true);
+      } catch (err) {
+        console.error("Error: ", err);
+        alert("Login failed!");
+      }
     }
-
-    // try {
-    //   await loginUser(email, password);
-    //   alert("Login successful!");
-    //   setRedirect(true);
-    // } catch (err) {
-    //   console.error("Error: ", err);
-    //   alert("Invalid Credentials");
-    // }
-    // try {
-    //   const response = await fetch("http://localhost:5000/login", {
-    //     method: "POST",
-    //     body: JSON.stringify({ email, password }),
-    //     headers: { "Content-Type": "application/json" },
-    //   });
-    //   console.log(response);
-    //   if (response.ok) {
-    //     localStorage.setItem("userEmail", email);
-    //     alert("Login successful!");
-    //     setRedirect(true);
-    //   } else {
-    //     alert("Invalid Credentials");
-    //   }
-    // } catch (err) {
-    //   console.error("Error: ", err);
-    //   alert("Login failed!");
-    // }
   };
 
   if (redirect) {

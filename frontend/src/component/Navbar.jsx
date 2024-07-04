@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "../atoms/user";
 import {
   AppBar,
   Toolbar,
@@ -14,7 +16,7 @@ import {
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
-import { logoutUser } from "../utils/authFunction";
+import { useAuth } from "../utils/authFunction";
 import logo from "../../src/blog.png";
 
 const StyledToolbar = styled(Toolbar)({
@@ -33,7 +35,10 @@ const categories = [
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const user = useRecoilValue(userAtom);
   const navigate = useNavigate();
+
+  const { logoutUser, checkAuth } = useAuth();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -54,12 +59,16 @@ const Navbar = () => {
     try {
       await logoutUser();
       alert("Logout successful!");
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       alert("Error logging out");
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   return (
     <AppBar
@@ -148,30 +157,43 @@ const Navbar = () => {
             </IconButton>
           </List>
         </Box>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => handleNavigation("/create")}
-            sx={{
-              textTransform: "none",
-              bgcolor: "#E0E0E0",
-              color: "black",
-              "&:hover": {
+
+        {user ? (
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleNavigation("/create")}
+              sx={{
+                textTransform: "none",
                 bgcolor: "#E0E0E0",
-              },
-            }}
-          >
-            Create Blog
-          </Button>
-          <Button
-            color="inherit"
-            onClick={() => handleLogout}
-            sx={{ textTransform: "none", ml: 2 }}
-          >
-            Logout
-          </Button>
-        </Box>
+                color: "black",
+                "&:hover": {
+                  bgcolor: "#E0E0E0",
+                },
+              }}
+            >
+              Create Blog
+            </Button>
+            <Button
+              color="inherit"
+              onClick={handleLogout}
+              sx={{ textTransform: "none", ml: 2 }}
+            >
+              Logout
+            </Button>
+          </Box>
+        ) : (
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Button
+              color="inherit"
+              onClick={() => handleNavigation("/login")}
+              sx={{ textTransform: "none", ml: 2, fontSize: "17px" }}
+            >
+              Login
+            </Button>
+          </Box>
+        )}
       </StyledToolbar>
     </AppBar>
   );
