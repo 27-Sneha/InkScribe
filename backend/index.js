@@ -12,10 +12,6 @@ const port = 5000;
 
 app.use(bodyParser.json());
 app.use(cors());
-// const uploadDir = path.join(__dirname, "uploads");
-// if (!fs.existsSync(uploadDir)) {
-//   fs.mkdirSync(uploadDir);
-// }
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

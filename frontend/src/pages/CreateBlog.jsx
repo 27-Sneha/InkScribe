@@ -152,7 +152,14 @@ const CreateForm = () => {
         <Button
           type="submit"
           variant="contained"
-          sx={{ marginBottom: 3, backgroundColor: "#c8d7f6", color: "black" }}
+          sx={{
+            marginBottom: 3,
+            bgcolor: "#c8d7f6",
+            color: "black",
+            "&:hover": {
+              bgcolor: "#c8d7f6",
+            },
+          }}
         >
           Create
         </Button>
