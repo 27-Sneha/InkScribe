@@ -80,15 +80,18 @@ InkScribe is a user-friendly blog platform built with MERN stack that allows any
 4. Update MongoDB configuration:
 
    - Open `backend/connection.js` and modify the following :
+
      ```javascript
         mongodb+srv://<username>:<password>@<cluster>/<database>?retryWrites=true&w=majority&appName=<appname>
      ```
-     Replace-
-     <username>: Your MongoDB username
-     <password>: Your MongoDB password
-     <cluster>: The MongoDB cluster URL
-     <database>: The MongoDB database name
-     <appname>: Optional. The name of your application
+
+     Replace the following placeholders in your configuration files:
+
+     - `<username>`: Your MongoDB username
+     - `<password>`: Your MongoDB password
+     - `<cluster>`: The MongoDB cluster URL
+     - `<database>`: The MongoDB database name
+     - `<appname>`: Optional. The name of your application
 
 5. Start the backend server:
    ```sh
