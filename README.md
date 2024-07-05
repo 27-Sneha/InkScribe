@@ -36,23 +36,23 @@ InkScribe is a user-friendly blog platform built with MERN stack that allows any
 
 ## Login
 
-![Login](frontend/src/images/Login-Page.png)
+![Login](./frontend/src/images/Login-Page.png)
 
 ## SignUp
 
-![SignUp](frontend/src/images/Register-Page.png)
+![SignUp](./frontend/src/images/Register-Page.png)
 
 ## Home Page
 
-![Home Page](frontend/src/images/Home-Page_all.png)
+![Home Page](./frontend/src/images/Home-Page_all.png)
 
 ## Create New Blog
 
-![Create New Blog](frontend/src/images/CreateBlog-Page.png)
+![Create New Blog](./frontend/src/images/CreateBlog-Page.png)
 
 ## Edit Blog
 
-![Edit Blog](frontend/src/images/EditBlog-Page.png)
+![Edit Blog](./frontend/src/images/EditBlog-Page.png)
 
 ## Installation🚀
 
