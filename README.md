@@ -1,8 +1,8 @@
-# InkScribe
+# InkScribe📝
 
 InkScribe is a user-friendly blog platform built with MERN stack that allows anyone to explore a wide range of blog posts without any barriers. Users who wish to contribute their own blogs or manage their existing posts can do so by logging into the system.
 
-## Features
+## Features🎯
 
 - **View Blogs**: All visitors can view blogs without logging in.
 - **User Authentication**: Secure login and registration for users using Appwrite.
@@ -12,7 +12,7 @@ InkScribe is a user-friendly blog platform built with MERN stack that allows any
 - **Category-wise Filtering**: Browse blogs by categories to find content that interests you.
 - **User-Specific Content Management**: Users can only manage (add, edit, delete) their own blog posts.
 
-## Technologies Used
+## Technologies💻
 
 -**Frontend:**
 
@@ -54,7 +54,7 @@ InkScribe is a user-friendly blog platform built with MERN stack that allows any
 
 ![Edit Blog](frontend/src/images/EditBlog-Page.png)
 
-## Installation
+## Installation🚀
 
 ### Backend
 
