@@ -17,7 +17,7 @@ InkScribe is a user-friendly blog platform built with MERN stack that allows any
 -**Frontend:**
 
 - [ReactJs](https://react.dev/learn) - Enhances blog interactivity and responsiveness with its efficient UI rendering capabilities.
-- [RecoilJs](https://recoiljs.org/docs/introduction/getting-started) - Streamlines the management of user states within the blog application, ensuring seamless rendering and interaction across components.
+
 - [Material-UI](https://mui.com/material-ui/getting-started/) - Provides a sleek and consistent design for blog components, ensuring a polished user interface.
 
 -**Backend:**
