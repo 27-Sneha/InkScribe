@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useRecoilValue } from "recoil";
-import { userAtom } from "../atoms/user";
+import React, { useState } from "react";
 import {
   Container,
   Typography,
@@ -10,6 +8,8 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  Snackbar,
+  SnackbarContent,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
@@ -44,38 +44,49 @@ const formats = [
   "image",
 ];
 
-const CreateForm = () => {
+const CreateBlog = () => {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [category, setCategory] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState("");
-  const author = useRecoilValue(userAtom);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  const author = localStorage.getItem("user");
 
   const navigate = useNavigate();
 
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.set("title", title);
-    formData.set("summary", summary);
-    formData.set("category", category);
-    formData.set("content", content);
-    formData.set("image", image);
-    formData.set("author", author);
 
     console.log("Details: ", { title, summary, content, image, author });
 
     try {
       const response = await fetch("http://localhost:5000/create", {
         method: "POST",
-        body: formData,
+        body: JSON.stringify({
+          title,
+          summary,
+          category,
+          content,
+          image,
+          author,
+        }),
+        headers: { "Content-Type": "application/json" },
       });
+
       if (response.ok) {
-        alert("Blog created successfully!");
+        setSnackbarMessage("Blog created successfully!");
+        setSnackbarOpen(true);
         navigate("/");
       } else {
-        alert("Failed to create blog");
+        setSnackbarMessage("Failed to create blog");
+        setSnackbarOpen(true);
       }
     } catch (err) {
       console.error("Error: ", err);
@@ -90,7 +101,7 @@ const CreateForm = () => {
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" sx={{ mb: 5 }}>
       <Typography variant="h5" gutterBottom sx={{ marginTop: 3 }}>
         Create Blog
       </Typography>
@@ -100,6 +111,7 @@ const CreateForm = () => {
           fullWidth
           margin="dense"
           value={title}
+          sx={{ backgroundColor: "#F7FAFD" }}
           onChange={(e) => setTitle(e.target.value)}
         />
         <TextField
@@ -109,6 +121,7 @@ const CreateForm = () => {
           rows={2}
           margin="dense"
           value={summary}
+          sx={{ backgroundColor: "#F7FAFD" }}
           onChange={(e) => setSummary(e.target.value)}
         />
         <FormControl fullWidth style={{ marginTop: 8, marginBottom: 5 }}>
@@ -118,6 +131,7 @@ const CreateForm = () => {
             labelId="category"
             id="category"
             value={category}
+            sx={{ backgroundColor: "#F7FAFD" }}
             onChange={(e) => setCategory(e.target.value)}
             label="Category"
           >
@@ -134,6 +148,7 @@ const CreateForm = () => {
           fullWidth
           margin="dense"
           value={image}
+          sx={{ backgroundColor: "#F7FAFD" }}
           onChange={(e) => setImage(e.target.value)}
         />
         <ReactQuill
@@ -146,7 +161,7 @@ const CreateForm = () => {
           style={{
             marginBottom: "20px",
             marginTop: "10px",
-            backgroundColor: "white",
+            backgroundColor: "#F7FAFD",
           }}
         />
         <Button
@@ -164,8 +179,23 @@ const CreateForm = () => {
           Create
         </Button>
       </form>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={5000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <SnackbarContent
+          sx={{
+            backgroundColor: "#cfe0f0",
+            fontWeight: "bold",
+            color: "black",
+          }}
+          message={snackbarMessage}
+        />
+      </Snackbar>
     </Container>
   );
 };
 
-export default CreateForm;
+export default CreateBlog;

@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Box, Typography, styled, Toolbar } from "@mui/material";
 import { Link } from "react-router-dom";
-import logo from "../../src/blog.png";
+import logo from "../../src/images/blog.png";
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",

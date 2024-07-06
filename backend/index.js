@@ -1,9 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const bcrypt = require("bcrypt");
-const multer = require("multer");
-const User = require("./models/user");
 const Blog = require("./models/blog");
 const connectDB = require("./connection");
 
@@ -13,20 +10,9 @@ const port = 5000;
 app.use(bodyParser.json());
 app.use(cors());
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./uploads");
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
-
-const upload = multer({ storage });
-
 connectDB();
 
-app.post("/create", upload.single("image"), async (req, res) => {
+app.post("/create", async (req, res) => {
   const { title, summary, category, content, image, author } = req.body;
   console.log("Body", req.body);
 

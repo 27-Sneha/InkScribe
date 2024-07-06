@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { userAtom } from "../atoms/user";
+import React, { useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -10,14 +8,15 @@ import {
   styled,
   IconButton,
   Button,
-  Icon,
   Menu,
   MenuItem,
+  Snackbar,
+  SnackbarContent,
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../utils/authFunction";
-import logo from "../../src/blog.png";
+import logo from "../../src/images/blog.png";
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
@@ -35,10 +34,18 @@ const categories = [
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const user = useRecoilValue(userAtom);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  const user = localStorage.getItem("user");
   const navigate = useNavigate();
 
-  const { logoutUser, checkAuth } = useAuth();
+  const { logoutUser } = useAuth();
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+    window.location.reload();
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -58,17 +65,13 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await logoutUser();
-      alert("Logout successful!");
-      navigate("/");
+      setSnackbarMessage("Logout successful!");
+      setSnackbarOpen(true);
     } catch (error) {
       alert("Error logging out");
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    checkAuth();
-  }, []);
 
   return (
     <AppBar
@@ -195,6 +198,21 @@ const Navbar = () => {
           </Box>
         )}
       </StyledToolbar>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={5000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+      >
+        <SnackbarContent
+          sx={{
+            backgroundColor: "#cfe0f0",
+            fontWeight: "bold",
+            color: "black",
+          }}
+          message={snackbarMessage}
+        />
+      </Snackbar>
     </AppBar>
   );
 };

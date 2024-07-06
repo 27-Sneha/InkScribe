@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useRecoilValue } from "recoil";
-import { userAtom } from "../atoms/user";
 import {
   Box,
   Typography,
@@ -31,7 +29,7 @@ const BlogDetail = () => {
   const [category, setCategory] = useState("");
   const [image, setImage] = useState("");
 
-  const user = useRecoilValue(userAtom);
+  const user = localStorage.getItem("user");
 
   const location = useLocation();
   const { id } = location.state || {};
@@ -87,7 +85,7 @@ const BlogDetail = () => {
         throw new Error("Failed to update blog");
       }
       const updatedBlog = await response.json();
-      console.log("updateeeeee: ", updatedBlog);
+
       alert("Blog updated successfully!");
       setBlog(updatedBlog);
       handleClose();

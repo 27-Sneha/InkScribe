@@ -1,0 +1,12 @@
+.bg {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #b1c1d8;
+}
+body {
+  background-color: #ecf4fb;
+}

@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from "react";
 import Blog from "./Blog";
-import { Container, Grid } from "@mui/material";
+import { Container, Grid, Snackbar, SnackbarContent } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { userAtom } from "../atoms/user";
 
 const BlogList = () => {
   const [blogs, setBlogs] = useState([]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  const author = useRecoilValue(userAtom);
+  const author = localStorage.getItem("user");
 
   const navigate = useNavigate();
   const location = useLocation();
   const { category } = location.state || {};
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -33,7 +37,8 @@ const BlogList = () => {
         }
         const data = await response.json();
         if (data.length === 0) {
-          alert("No blogs found for this category");
+          setSnackbarMessage("No Blogs found!");
+          setSnackbarOpen(true);
           navigate("/");
         }
         setBlogs(data);
@@ -54,6 +59,21 @@ const BlogList = () => {
           </Grid>
         ))}
       </Grid>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={5000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <SnackbarContent
+          sx={{
+            backgroundColor: "#cfe0f0",
+            fontWeight: "bold",
+            color: "black",
+          }}
+          message={snackbarMessage}
+        />
+      </Snackbar>
     </Container>
   );
 };
