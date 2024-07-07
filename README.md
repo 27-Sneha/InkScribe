@@ -28,7 +28,7 @@ InkScribe is a user-friendly blog platform built with MERN stack that allows any
 
 -**Database:**
 
-- [MongoDB](https://www.mongodb.com/cloud/atlas/register) - Powers the backend of the blog platform, handling requests and enabling server-side logic.
+- [MongoDB](https://www.mongodb.com/cloud/atlas/register) - Stores blog data in a flexible and scalable document-oriented database, ensuring efficient data management.
 
 -**Authentication:**
 
